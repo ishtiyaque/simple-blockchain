@@ -1,7 +1,7 @@
 CXX = g++
 LIBS = -lpthread
 
-client.out : block.o blockchain.o main.o sync_queue.o utils.o
+client.out : block.o blockchain.o block_handler.o main.o sync_queue.o utils.o
 	$(CXX) -o client.out *.o $(LIBS)
 
 sync_queue.o: sync_queue.h

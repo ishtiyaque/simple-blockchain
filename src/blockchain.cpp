@@ -1,6 +1,12 @@
 #include "blockchain.h"
 
+Blockchain::Blockchain(){
+	head = tail = 0;
+	pthread_mutex_init(&lock, NULL);
+}
+
 bool Blockchain::append(Block *blk) {
+	pthread_mutex_lock (&lock);
 	if(!head) {
 		head = tail = blk;
 	}else {
@@ -8,11 +14,13 @@ bool Blockchain::append(Block *blk) {
 		tail->next = blk;
 		tail = blk;
 	}
+	pthread_mutex_unlock (&lock);
 	return true;
 }
 
 double Blockchain::get_balance(Clientid id) {
 	double bal = 0.0;
+	pthread_mutex_lock (&lock);
 	for(Block *temp = tail; temp; temp = temp->prev) {
 		if(temp->get_sndr() == id) {
 			bal -= temp->get_amount();
@@ -20,6 +28,7 @@ double Blockchain::get_balance(Clientid id) {
 			bal += temp->get_amount();
 		}
 	}
+	pthread_mutex_unlock (&lock);
 	return bal;
 }
 
@@ -30,7 +39,13 @@ bool Blockchain::make_transaction(Clientid sndr, Clientid rcvr, double amount) {
 	return append(blk);
 }
 
+Blockchain::~Blockchain() {
+	pthread_mutex_destroy(&lock);
+}
+
 void Blockchain::print() {
+	pthread_mutex_lock (&lock);
 	for(Block *tmp = head;tmp;tmp = tmp->next)
-		printf("%d %d %lf\n",tmp->get_sndr(), tmp->get_rcvr(), tmp->get_amount());
+		printf("%d -> %d\t%lf\n",tmp->get_sndr(), tmp->get_rcvr(), tmp->get_amount());
+	pthread_mutex_unlock (&lock);
 }

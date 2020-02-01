@@ -22,35 +22,40 @@ void init(const char * filename) {
 	}
 	//bzero((char *) timetable, sizeof(unsigned int)*(num_client + 1) * (num_client + 1));
 		
-	client_sockets = new int[num_client - 1];
+	client_sockets = new int[num_client + 1];
 	init_balance = new double[num_client + 1];
+	
 	for(int i = 1; i < my_id; i++) {
 		bzero((char *) &addr, sizeof(addr));
-		fscanf(fp,"%s%d%lf",ip, &portno, &ignore);
+		fscanf(fp,"%s%d%lf",ip, &portno, &init_balance[i]);
 		addr.sin_family = AF_INET;
     	addr.sin_addr.s_addr = inet_addr(ip);
     	addr.sin_port = htons(portno);		
-		client_sockets[i-1] = socket(AF_INET, PROTOCOL, 0);		
-		while(connect(client_sockets[i-1],(struct sockaddr *) &addr,sizeof(addr)) < 0)
+		client_sockets[i] = socket(AF_INET, PROTOCOL, 0);		
+		while(connect(client_sockets[i],(struct sockaddr *) &addr,sizeof(addr)) < 0)
 			continue;
 		printf("Connected with port %d\n",portno);
 
 	}
 	
 	bzero((char *) &addr, sizeof(addr));
-	fscanf(fp,"%s%d%lf",ip, &portno, &ignore);
+	fscanf(fp,"%s%d%lf",ip, &portno, &init_balance[my_id]);
 	my_sock = socket(AF_INET, PROTOCOL, 0);
 	
 	addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = inet_addr(ip);
     addr.sin_port = htons(portno);
 	bind(my_sock, (struct sockaddr *) &addr, sizeof(addr));
+	
+	for(i = my_id + 1; i <= num_client; i++) {
+		fscanf(fp,"%s%d%lf",ip, &portno, &init_balance[i]);
+	}	
 
 	listen(my_sock, 10);
 
 	
 	for(i = my_id + 1; i <= num_client; i++) {
-		client_sockets[i - 2] = accept(my_sock,0,0);
+		client_sockets[i] = accept(my_sock,0,0);
 		printf("Received connction\n");
 	}	
 	fflush(stdout);
