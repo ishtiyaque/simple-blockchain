@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "blockchain.h"
 
 unsigned int num_client;
 
@@ -8,6 +9,8 @@ double *init_balance;
 unsigned int **timetable;
 
 int *client_sockets;
+
+Blockchain chain;
 
 int main(int argc, char *argv[]) {
 	char command[5];
@@ -20,7 +23,17 @@ int main(int argc, char *argv[]) {
 	printf("Started Client %d\n",my_id);
 	init("../config.txt");
 	print_time_table();
-		
-	while(1);	
+	
+	
+	while(1) {
+		scanf("%s",command);
+		if(!strcmp(command,"TRAN")) {
+			
+		} else if(!strcmp(command,"MSG")) {
+		} else {
+			printf("Invalid command");
+		}
+	}
+
 	return 0;
 }
