@@ -26,4 +26,6 @@ using namespace std;
 
 void init(const char *filename);
 void my_sleep();
+void print_time_table();
 #endif
+

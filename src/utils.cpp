@@ -15,8 +15,15 @@ void init(const char * filename) {
 		exit(1);
 	}
 	fscanf(fp,"%d",&num_client);
+	
+	timetable = new unsigned int *[num_client + 1]; //Using 1 based indexing
+	for(int i = 1; i <= num_client;i++) {
+		timetable[i] = new unsigned int[num_client + 1];
+	}
+	//bzero((char *) timetable, sizeof(unsigned int)*(num_client + 1) * (num_client + 1));
 		
 	client_sockets = new int[num_client - 1];
+	init_balance = new double[num_client + 1];
 	for(int i = 1; i < my_id; i++) {
 		bzero((char *) &addr, sizeof(addr));
 		fscanf(fp,"%s%d%lf",ip, &portno, &ignore);
@@ -52,7 +59,14 @@ void init(const char * filename) {
 
 }	
 
-
+void print_time_table() {
+	for(int i = 1; i <= num_client;i++) {
+		for(int j = 1; j <= num_client; j++) {
+			printf("%d\t",timetable[i][j]);
+		}
+		printf("\n");
+	}
+}
 
 void my_sleep() {
 	sleep(2 + (rand() % SLEEP_TIME));

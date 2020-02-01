@@ -1,7 +1,7 @@
 CXX = g++
 LIBS = -lpthread
 
-client.out : blockchain.o main.o utils.o
+client.out : block.o blockchain.o main.o utils.o
 	$(CXX) -o client.out *.o $(LIBS)
 
 %.o: %.cpp %.h

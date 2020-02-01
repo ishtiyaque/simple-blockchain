@@ -1,12 +1,5 @@
 #include "blockchain.h"
 
-Block::Block(Clientid s, Clientid r, double a) {
-	sndr = s;
-	rcvr = r;
-	amount = a;
-	prev = next = 0;
-}
-
 bool Blockchain::append(Block *blk) {
 	if(!head) {
 		head = tail = blk;
@@ -33,7 +26,7 @@ double Blockchain::get_balance(Clientid id) {
 bool Blockchain::make_transaction(Clientid sndr, Clientid rcvr, double amount) {
 	if(sndr && get_balance(sndr) < amount)
 		return false;
-	Block *blk = new Block(sndr, rcvr, amount);
+	Block *blk = new Block(sndr, rcvr, amount, 0);
 	return append(blk);
 }
 
