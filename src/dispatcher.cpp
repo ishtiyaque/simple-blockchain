@@ -1,4 +1,5 @@
 #include "dispatcher.h"
+#include "globals.h"
 
 void *dispatch(void *ignore) {
 	client_message *msg;
@@ -12,6 +13,11 @@ void *dispatch(void *ignore) {
 		write(socket,(char *)&sz ,sizeof(int));
 		for(int i = 0; i < sz; i++) {
 			write(socket, (char *)(msg->log[i]), sizeof(Block));
+		}
+		for(int i = 1; i <= num_client; i++) {
+			for(int j = 1; j <= num_client; j++) {
+				write(socket, (char *)&timetable[i][j], sizeof(unsigned int));
+			}
 		}
 		delete msg;
 		

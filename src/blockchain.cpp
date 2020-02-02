@@ -1,4 +1,5 @@
 #include "blockchain.h"
+#include "globals.h"
 
 Blockchain::Blockchain(){
 	head = tail = 0;
@@ -55,7 +56,9 @@ vector<Block *> Blockchain::get_log(Clientid id) {
 	vector<Block *> log;
 	pthread_mutex_lock (&lock);
 	for(Block * temp = head; temp; temp = temp->next) {
-		log.push_back(temp);
+		if(temp->get_timestamp() > timetable[id][temp->get_sndr()]) {
+			log.push_back(temp);
+		}
 	}
 	pthread_mutex_unlock (&lock);
 	return log;

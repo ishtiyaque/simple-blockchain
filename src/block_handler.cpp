@@ -6,7 +6,12 @@ void *handle_block(void *ignore) {
 	
 	while(1) {
 		block = block_queue.remove();
-		chain.append(block);
+		if(block->get_timestamp() > timetable[my_id][block->get_sndr()]) {
+			chain.append(block);
+			timetable[my_id][block->get_sndr()] = block->get_timestamp();
+		} else {
+			delete block;
+		}
 	}
 
 }
