@@ -1,10 +1,6 @@
 #include "message.h"
 
-client_message::client_message(size_t s){
-	log_size = s;
-	log = new Block[log_size]; 
-}
-
-client_message::~client_message() {
-	delete log[];
+client_message::client_message(Clientid r, vector<Block *>l){
+	rcvr = r;
+	log = l; 
 }

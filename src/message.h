@@ -2,13 +2,13 @@
 #define REQUEST_H
 
 #include "block.h"
-
+#include<vector>
+using namespace std;
 
 struct client_message {
-	size_t log_size;
-	Block *log;
-	client_message(size_t s);
-	~client_message();
+	Clientid rcvr;
+	vector<Block *> log;
+	client_message(Clientid r, vector<Block *>l);
 	
 };
 

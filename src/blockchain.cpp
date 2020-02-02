@@ -6,6 +6,7 @@ Blockchain::Blockchain(){
 }
 
 bool Blockchain::append(Block *blk) {
+	blk->prev = blk->next = 0;
 	pthread_mutex_lock (&lock);
 	if(!head) {
 		head = tail = blk;
@@ -48,4 +49,15 @@ void Blockchain::print() {
 	for(Block *tmp = head;tmp;tmp = tmp->next)
 		printf("%d -> %d\t%lf\n",tmp->get_sndr(), tmp->get_rcvr(), tmp->get_amount());
 	pthread_mutex_unlock (&lock);
+}
+
+vector<Block *> Blockchain::get_log(Clientid id) {
+	vector<Block *> log;
+	pthread_mutex_lock (&lock);
+	for(Block * temp = head; temp; temp = temp->next) {
+		log.push_back(temp);
+	}
+	pthread_mutex_unlock (&lock);
+	return log;
+
 }

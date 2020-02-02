@@ -16,6 +16,8 @@ void init(const char * filename) {
 	}
 	fscanf(fp,"%d",&num_client);
 	
+	client_list = new unsigned int[num_client + 1];
+	
 	timetable = new unsigned int *[num_client + 1]; //Using 1 based indexing
 	for(int i = 1; i <= num_client;i++) {
 		timetable[i] = new unsigned int[num_client + 1];
@@ -26,6 +28,7 @@ void init(const char * filename) {
 	init_balance = new double[num_client + 1];
 	
 	for(int i = 1; i < my_id; i++) {
+		client_list[i] = i;
 		bzero((char *) &addr, sizeof(addr));
 		fscanf(fp,"%s%d%lf",ip, &portno, &init_balance[i]);
 		addr.sin_family = AF_INET;
@@ -38,6 +41,7 @@ void init(const char * filename) {
 
 	}
 	
+	client_list[my_id] = my_id;
 	bzero((char *) &addr, sizeof(addr));
 	fscanf(fp,"%s%d%lf",ip, &portno, &init_balance[my_id]);
 	my_sock = socket(AF_INET, PROTOCOL, 0);
@@ -55,6 +59,7 @@ void init(const char * filename) {
 
 	
 	for(i = my_id + 1; i <= num_client; i++) {
+		client_list[i] = i;
 		client_sockets[i] = accept(my_sock,0,0);
 		printf("Received connction\n");
 	}	
