@@ -65,14 +65,14 @@ int main(int argc, char *argv[]) {
 			if((chain.get_balance(my_id) + init_balance[my_id]) >= amount) {
 				block = new Block(my_id, client_id, amount, ++timetable[my_id][my_id]);
 				chain.append(block);
-				printf("Transfer SUCCESSFULL\n");
+				printf("Transfer SUCCESSFULL\nTime: %d\n",timetable[my_id][my_id]);
 			}else {
 				printf("Insufficient Balance! Transfer FAILED\n");
 			}
 			
 		} else if (!strcmp(command,"BAL")) {
 			scanf("%d",&client_id);
-			printf("Balance of Client %d is: $%lf\n",client_id, chain.get_balance(client_id) + init_balance[client_id]);
+			printf("Balance of Client %d is: $%.2lf\n",client_id, chain.get_balance(client_id) + init_balance[client_id]);
 		} else if(!strcmp(command,"MSG")) {
 			scanf("%d",&client_id);
 			vector<Block *> log = chain.get_log(client_id);			

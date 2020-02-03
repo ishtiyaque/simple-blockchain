@@ -37,7 +37,7 @@ void init(const char * filename) {
 		client_sockets[i] = socket(AF_INET, PROTOCOL, 0);		
 		while(connect(client_sockets[i],(struct sockaddr *) &addr,sizeof(addr)) < 0)
 			continue;
-		printf("Connected with port %d\n",portno);
+		//printf("Connected with port %d\n",portno);
 
 	}
 	
@@ -61,7 +61,7 @@ void init(const char * filename) {
 	for(i = my_id + 1; i <= num_client; i++) {
 		client_list[i] = i;
 		client_sockets[i] = accept(my_sock,0,0);
-		printf("Received connction\n");
+		//printf("Received connction\n");
 	}	
 	fflush(stdout);
 	fclose(fp);

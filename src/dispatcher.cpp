@@ -8,6 +8,8 @@ void *dispatch(void *ignore) {
 		
 	while(1) {		
 		msg = log_queue.remove();
+		printf("Sending message to Client %d...\n",msg->rcvr);
+		my_sleep();
 		socket = client_sockets[msg->rcvr];
 		sz = msg->log.size();
 		write(socket,(char *)&sz ,sizeof(int));
